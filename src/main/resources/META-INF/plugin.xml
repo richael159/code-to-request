@@ -1,0 +1,78 @@
+<idea-plugin>
+    <id>com.code2request</id>
+    <name>Code2Request</name>
+    <!-- TODO before publishing: fill in your public contact email and a project/homepage URL -->
+    <vendor email="richael159@gmail.com" url="https://github.com/richael159/code-to-request">Code2Request</vendor>
+    <description><![CDATA[
+        <p><b>From Spring Controller to a runnable HTTP request, in one click.</b></p>
+        <p>Click the icon next to any controller method. Code2Request reads your mappings and parameters
+        and fills in a ready-to-send request with realistic sample values. Edit what you need, hit Run,
+        and see the response without leaving the IDE.</p>
+        <ul>
+          <li>Gutter icon and right-click action on Spring MVC / Spring Boot controller methods (Java and Kotlin)</li>
+          <li>Path variables, query params, headers, JSON bodies and file uploads</li>
+          <li>Smart sample values: <code>email</code>, <code>phone</code>, <code>pageSize</code>… get realistic data, not just "test"</li>
+          <li>Nested DTOs, lists and enums expanded into JSON; respects <code>@JsonProperty</code> and fastjson <code>@JSONField</code></li>
+          <li>Environments (local / dev / test) with common headers such as <code>Authorization</code></li>
+          <li>Drafts saved per endpoint, so your last request is always there</li>
+        </ul>
+        <p>Lightweight by design: no account, no cloud, no cluttered toolbar.</p>
+    ]]></description>
+    <change-notes><![CDATA[
+        <p><b>0.3.0</b></p>
+        <ul>
+          <li>Kotlin controller support</li>
+          <li>Common headers per environment (e.g. Authorization token)</li>
+          <li>Switching environment now updates the request URL</li>
+          <li>Requests open in the environment you used last instead of always "local"</li>
+          <li>List / array / Map fields generate a sample element instead of an empty value</li>
+          <li>JSON field names follow @JsonProperty, @JSONField and @SerializedName (on fields, getters, or Kotlin constructor parameters); @JsonIgnore fields are skipped</li>
+          <li>Fixed: DTOs whose names start with "Set" or "Map" were treated as collections</li>
+          <li>Fixed: two fields of the same DTO type now both get a sample</li>
+          <li>Removed debug notifications</li>
+        </ul>
+    ]]></change-notes>
+
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.java</depends>
+    <depends optional="true" config-file="plugin-kotlin.xml">org.jetbrains.kotlin</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+
+        <toolWindow
+            id="Code2Request"
+            displayName="Code2Request"
+            anchor="right"
+            factoryClass="com.code2request.ui.window.RequestToolWindowFactory"
+            icon="/icons/run_request.svg"/>
+
+        <codeInsight.lineMarkerProvider
+            language="JAVA"
+            implementationClass="com.code2request.ui.gutter.RunRequestLineMarkerProvider"/>
+
+        <projectService
+            serviceImplementation="com.code2request.storage.DraftStorageService"/>
+
+        <projectService
+            serviceImplementation="com.code2request.storage.EnvironmentConfigService"/>
+
+        <notificationGroup id="Code2Request"
+                           displayType="BALLOON"
+                           isLogByDefault="true"/>
+
+    </extensions>
+
+    <!-- Declare K2 Kotlin compiler mode compatibility -->
+    <extensions defaultExtensionNs="org.jetbrains.kotlin">
+        <supportsKotlinPluginMode supportsK2="true"/>
+    </extensions>
+
+    <actions>
+        <action id="com.code2request.RunRequestAction"
+                class="com.code2request.ui.action.RunRequestAction"
+                text="Run Request"
+                description="Generate and run HTTP request from Spring Controller method">
+            <add-to-group group-id="EditorPopupMenu" anchor="first"/>
+        </action>
+    </actions>
+</idea-plugin>

@@ -1,0 +1,12 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        mavenCentral()
+    }
+}
+
+plugins {
+    id("org.jetbrains.intellij.platform.settings") version "2.5.0"
+}
+
+rootProject.name = "code-to-request"
