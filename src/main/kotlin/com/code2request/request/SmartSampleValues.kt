@@ -88,7 +88,12 @@ object SmartSampleValues {
         Rule(listOf("order", "direction"), MatchMode.EXACT, "desc", TypeFamily.STRING),
 
         // ---- money / amount ----
-        Rule(listOf("price", "amount", "money", "fee", "cost", "balance", "salary"), MatchMode.CONTAINS, "99.99"),
+        // Typed so a BigDecimal/Double price is a JSON number, not the string "99.99"
+        Rule(listOf("price", "amount", "money", "fee", "cost", "balance", "salary"), MatchMode.CONTAINS, 99.99, TypeFamily.FLOAT),
+        // Integer amounts are usually in cents
+        Rule(listOf("price", "amount", "money", "fee", "cost", "balance", "salary"), MatchMode.CONTAINS, 9999, TypeFamily.INTEGER),
+        Rule(listOf("price", "amount", "money", "fee", "cost", "balance", "salary"), MatchMode.CONTAINS, 9999, TypeFamily.LONG),
+        Rule(listOf("price", "amount", "money", "fee", "cost", "balance", "salary"), MatchMode.CONTAINS, "99.99", TypeFamily.STRING),
         Rule(listOf("quantity", "qty"), MatchMode.CONTAINS, 1, TypeFamily.INTEGER),
         Rule(listOf("num"), MatchMode.EXACT, 1, TypeFamily.INTEGER),
         Rule(listOf("rate", "ratio", "percent", "percentage", "discount"), MatchMode.CONTAINS, 0.5, TypeFamily.FLOAT),

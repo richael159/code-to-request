@@ -197,9 +197,13 @@ class RequestPanel(private val project: Project) : JPanel(BorderLayout()) {
 
         formDataPanel.load(draft.formData, draft.filePaths)
 
-        // Auto-switch to Form Data tab when the draft has file fields
-        if (draft.filePaths.isNotEmpty() || draft.formData.isNotEmpty()) {
-            paramTabs.selectedIndex = TAB_FORM_DATA
+        // Open the tab that holds the interesting part of the request:
+        // form data > JSON body > query params > headers
+        paramTabs.selectedIndex = when {
+            draft.filePaths.isNotEmpty() || draft.formData.isNotEmpty() -> TAB_FORM_DATA
+            draft.body.isNotBlank() -> TAB_BODY
+            draft.queryParams.isNotEmpty() -> TAB_QUERY
+            else -> TAB_HEADERS
         }
     }
 
@@ -227,6 +231,10 @@ class RequestPanel(private val project: Project) : JPanel(BorderLayout()) {
     }
 
     companion object {
+        // Must match the order of paramTabs.addTab(...) in setupUI()
+        private const val TAB_HEADERS = 0
+        private const val TAB_QUERY = 1
+        private const val TAB_BODY = 2
         private const val TAB_FORM_DATA = 3
     }
 }
