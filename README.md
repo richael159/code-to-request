@@ -6,7 +6,7 @@ An IntelliJ IDEA plugin that turns a Spring MVC / Spring Boot controller method 
 
 [中文说明](#中文说明)
 
-<!-- TODO: replace with a GIF: click gutter icon -> request generated -> send -> response -->
+![demo](docs/demo.gif)
 
 ## Features
 
