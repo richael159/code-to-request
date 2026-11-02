@@ -46,7 +46,7 @@ intellijPlatform {
     // ./gradlew verifyPlugin checks compatibility against the IDE versions JetBrains recommends
     pluginVerification {
         ides {
-            recommended()
+            ide("IC", "2024.1.7")
         }
     }
     signing {

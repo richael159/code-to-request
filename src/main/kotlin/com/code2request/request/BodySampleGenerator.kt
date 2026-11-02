@@ -117,11 +117,11 @@ object BodySampleGenerator {
     }
 
     private fun primitiveSample(type: PsiPrimitiveType): Any = when (type) {
-        PsiType.INT, PsiType.SHORT, PsiType.BYTE -> 1
-        PsiType.LONG -> 1
-        PsiType.BOOLEAN -> true
-        PsiType.DOUBLE, PsiType.FLOAT -> 0.0
-        PsiType.CHAR -> "a"
+        PsiTypes.intType(), PsiTypes.shortType(), PsiTypes.byteType() -> 1
+        PsiTypes.longType() -> 1
+        PsiTypes.booleanType() -> true
+        PsiTypes.doubleType(), PsiTypes.floatType() -> 0.0
+        PsiTypes.charType() -> "a"
         else -> 0
     }
 

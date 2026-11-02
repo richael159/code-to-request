@@ -118,14 +118,14 @@ object PsiTypeResolver {
         return psiClass.allMethods
             .filter { !it.hasModifierProperty(PsiModifier.STATIC) }
             .filter { it.parameterList.parametersCount == 0 }
-            .filter { it.returnType != null && it.returnType != PsiType.VOID }
+            .filter { it.returnType != null && it.returnType != PsiTypes.voidType() }
             .mapNotNull { method ->
                 val name = method.name
                 val fieldName = when {
                     name.startsWith("get") && name.length > 3 ->
                         name.substring(3).replaceFirstChar { it.lowercase() }
                     name.startsWith("is") && name.length > 2
-                        && (method.returnType == PsiType.BOOLEAN
+                        && (method.returnType == PsiTypes.booleanType()
                             || method.returnType?.canonicalText == "java.lang.Boolean") ->
                         name.substring(2).replaceFirstChar { it.lowercase() }
                     else -> null
